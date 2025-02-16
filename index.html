@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EaglercraftX 1.12.2</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts/fullscreen.js" defer></script>
+    <style>
+        /* Add custom background to the body */
+        body {
+            background: url('assets/images/image.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+        #game-container {
+            position: relative;
+        }
+        #fullscreen-btn {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            z-index: 10; /* Ensure the button is above other elements */
+            background-color: #fff; /* Add background color for visibility */
+            border: 1px solid #000; /* Add border for visibility */
+            padding: 5px 10px; /* Add padding for better appearance */
+            display: flex; /* Use flexbox for icon and text alignment */
+            align-items: center; /* Center align items vertically */
+            cursor: pointer; /* Change cursor to pointer for better UX */
+        }
+        #fullscreen-btn img {
+            margin-right: 5px; /* Space between icon and text */
+        }
+        iframe {
+            position: relative;
+            z-index: 1; /* Ensure iframe is below the button */
+        }
+        #loading-spinner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite; /* Safari */
+            animation: spin 2s linear infinite;
+        }
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-spinner"></div>
+    <header>
+        <h1>EaglercraftX 1.12.2 client</h1>
+    </header>
+    <main>
+        <section id="game-section">
+            <h2>Eaglercraft 1.12.2 is here!</h2>
+            <div id="game-container">
+                <!-- Embed the game here -->
+                <iframe id="game-iframe" src="EaglercraftX_1.12.2_Offline_en_US_deploy.html" style="width:100%; height:600px; border:none;" tabindex="0"></iframe>
+                <button id="fullscreen-btn">
+                    <img src="assets/icons/fullscreen-icon.png" alt="Fullscreen Icon" width="16" height="16">
+                    Fullscreen
+                </button>
+            </div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log('DOM fully loaded and parsed');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+            if (fullscreenBtn) {
+                console.log('Fullscreen button is visible');
+            } else {
+                console.log('Fullscreen button is not visible');
+            }
+
+            const gameIframe = document.getElementById('game-iframe');
+            gameIframe.focus(); // Ensure iframe gains focus on page load
+            gameIframe.addEventListener('click', function() {
+                gameIframe.focus(); // Ensure iframe gains focus when clicked
+            });
+
+            // Add event listener for keyboard navigation
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                    gameIframe.contentWindow.postMessage({ type: 'keydown', key: event.key }, '*');
+                }
+            });
+
+            // Adjust iframe source based on environment
+            const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            if (!isLocalhost) {
+                gameIframe.src = "EaglercraftX_1.12.2_Offline_en_US_deploy.html";
+            }
+        });
+
+        window.addEventListener('load', function() {
+            console.log('Window fully loaded');
+            document.getElementById('loading-spinner').style.display = 'none';
+            const gameIframe = document.getElementById('game-iframe');
+            gameIframe.focus(); // Ensure iframe gains focus on window load
+        });
+    </script>
+</body>
+</html>
